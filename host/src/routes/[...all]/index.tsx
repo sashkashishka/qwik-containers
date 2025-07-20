@@ -1,0 +1,122 @@
+import {
+  $,
+  component$,
+  useOn,
+  useOnDocument,
+  useSignal,
+  useStore,
+  useVisibleTask$,
+  useTask$,
+  useOnWindow,
+} from "@builder.io/qwik";
+import {
+  routeLoader$,
+  useLocation,
+  type DocumentHead,
+} from "@builder.io/qwik-city";
+import { RemoteContainer } from "~/components/RemoteContainer";
+
+function useMousePosition() {
+  const position = useStore({ x: 0, y: 0 });
+  useOnDocument(
+    "mousemove",
+    $((event) => {
+      const { x, y } = event as MouseEvent;
+      position.x = x;
+      position.y = y;
+    }),
+  );
+  return position;
+}
+
+export const loader = routeLoader$(() => "Hi! I was fetched on the server");
+
+export default component$(() => {
+  const loc = useLocation();
+  const pos = useMousePosition();
+  const d = loader();
+  const openStreaming = useSignal(true);
+  const openClient = useSignal(true);
+
+  return (
+    <>
+      <div>
+        MousePosition: ({pos.x}, {pos.y})
+      </div>
+      <br />
+      <div>Current route: {loc.url.toString()}</div>
+      <br />
+      <div>Server loaded data: {d}</div>
+      <br />
+      <code>
+        This button allows us mount and unmount SSR component on the client.
+        <br />
+        1. User requests main page
+        <br />
+        2. The server renders the specific component
+        <br />
+        3. On the client there is a need to unmount component and then mount
+        again
+      </code>
+      <br />
+      <br />
+      <br />
+      <br />
+      <button
+        onClick$={() => {
+          openStreaming.value = !openStreaming.value;
+        }}
+      >
+        toggle streaming
+      </button>
+      <br />
+      This is an example of streaming client side rendering (SSR on the client)
+      <br />
+      {loc.url.pathname.match("counter") && openStreaming.value && (
+        <RemoteContainer
+          type="counter"
+          host="http://localhost:4567"
+          htmlStreaming={true}
+        />
+      )}
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <button
+        onClick$={() => {
+          openClient.value = !openClient.value;
+        }}
+      >
+        toggle client
+      </button>
+      <br />
+      This is an example of fetching completely separate client bundle built
+      only for use client side
+      <br />
+      {loc.url.pathname.match("counter") && openClient.value && (
+        <RemoteContainer
+          type="counter"
+          host="http://localhost:4567"
+        />
+      )}
+      {/* {loc.url.pathname.match("logo") && open.value && ( */}
+      {/*   <RemoteContainer type="logo" /> */}
+      {/* )} */}
+      {/* {loc.url.pathname.match("react") && open.value && ( */}
+      {/*   <RemoteContainer type="react" /> */}
+      {/* )} */}
+    </>
+  );
+});
+
+export const head: DocumentHead = {
+  title: "Welcome to Qwik",
+  meta: [
+    {
+      name: "description",
+      content: "Qwik site description",
+    },
+  ],
+};
