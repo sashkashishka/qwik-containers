@@ -13,13 +13,13 @@ import path from "node:path";
 import FastifyQwik from "./plugins/fastify-qwik.js";
 
 // Directories where the static assets are located
-const outputDir = path.join(import.meta.dirname, "../output/counter/");
+const outputDir = path.join(import.meta.dirname, "../output/react/");
 const distDir = path.join(import.meta.dirname, "../dist/client/");
 const buildDir = path.join(distDir, "build");
 const assetsDir = path.join(distDir, "assets");
 
 // Allow for dynamic port and host
-const PORT = parseInt(process.env.PORT ?? "4567");
+const PORT = parseInt(process.env.PORT ?? "4568");
 const HOST = process.env.HOST ?? "0.0.0.0";
 
 const start = async () => {

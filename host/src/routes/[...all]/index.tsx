@@ -62,51 +62,91 @@ export default component$(() => {
       <br />
       <br />
       <br />
-      <button
-        onClick$={() => {
-          openStreaming.value = !openStreaming.value;
-        }}
-      >
-        toggle streaming
-      </button>
-      <br />
-      This is an example of streaming client side rendering (SSR on the client)
-      <br />
-      {loc.url.pathname.match("counter") && openStreaming.value && (
-        <RemoteContainer
-          type="counter"
-          host="http://localhost:4567"
-          htmlStreaming={true}
-        />
-      )}
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <button
-        onClick$={() => {
-          openClient.value = !openClient.value;
-        }}
-      >
-        toggle client
-      </button>
-      <br />
-      This is an example of fetching completely separate client bundle built
-      only for use client side
-      <br />
-      {loc.url.pathname.match("counter") && openClient.value && (
-        <RemoteContainer
-          type="counter"
-          host="http://localhost:4567"
-        />
+      {loc.url.toString().match("counter") && (
+        <>
+          <button
+            onClick$={() => {
+              openStreaming.value = !openStreaming.value;
+            }}
+          >
+            toggle streaming
+          </button>
+          <br />
+          This is an example of streaming client side rendering (SSR on the
+          client)
+          <br />
+          {openStreaming.value && (
+            <RemoteContainer
+              type="counter"
+              host="http://localhost:4567"
+              htmlStreaming={true}
+            />
+          )}
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <button
+            onClick$={() => {
+              openClient.value = !openClient.value;
+            }}
+          >
+            toggle client
+          </button>
+          <br />
+          This is an example of fetching completely separate client bundle built
+          only for use client side
+          <br />
+          {openClient.value && (
+            <RemoteContainer type="counter" host="http://localhost:4567" />
+          )}
+        </>
       )}
       {/* {loc.url.pathname.match("logo") && open.value && ( */}
       {/*   <RemoteContainer type="logo" /> */}
       {/* )} */}
-      {/* {loc.url.pathname.match("react") && open.value && ( */}
-      {/*   <RemoteContainer type="react" /> */}
-      {/* )} */}
+      {loc.url.pathname.match("react") && (
+        <>
+          <button
+            onClick$={() => {
+              openStreaming.value = !openStreaming.value;
+            }}
+          >
+            toggle streaming
+          </button>
+          <br />
+          This is an example of streaming client side rendering (SSR on the
+          client)
+          <br />
+          {openStreaming.value && (
+            <RemoteContainer
+              type="react"
+              host="http://localhost:4568"
+              htmlStreaming={true}
+            />
+          )}
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <button
+            onClick$={() => {
+              openClient.value = !openClient.value;
+            }}
+          >
+            toggle client
+          </button>
+          <br />
+          This is an example of fetching completely separate client bundle built
+          only for use client side
+          <br />
+          {openClient.value && (
+            <RemoteContainer type="react" host="http://localhost:4568" />
+          )}
+        </>
+      )}
     </>
   );
 });
