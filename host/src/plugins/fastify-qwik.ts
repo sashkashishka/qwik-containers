@@ -3,6 +3,7 @@ import fastifyStatic from "@fastify/static";
 import qwikCityPlan from "@qwik-city-plan";
 import type { FastifyPluginAsync } from "fastify";
 import fastifyPlugin from "fastify-plugin";
+import proxy from "@fastify/http-proxy";
 
 import { renderHost } from "../entry.ssr";
 
@@ -22,6 +23,19 @@ const qwikPlugin: FastifyPluginAsync<FastifyQwikOptions> = async (
   options,
 ) => {
   const { buildDir, distDir, assetsDir } = options;
+
+  fastify.register(proxy, {
+    upstream: "http://localhost:4567",
+    prefix: "/w/counter",
+    rewritePrefix: "/w/counter",
+    http2: false,
+  });
+  fastify.register(proxy, {
+    upstream: "http://localhost:4568",
+    prefix: "/w/react",
+    rewritePrefix: "/w/react",
+    http2: false,
+  });
 
   fastify.register(fastifyStatic, {
     root: buildDir,

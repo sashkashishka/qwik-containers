@@ -15,6 +15,7 @@ import {
   type DocumentHead,
 } from "@builder.io/qwik-city";
 import { RemoteContainer } from "~/components/RemoteContainer";
+import { Counter } from "~/components/counter";
 
 function useMousePosition() {
   const position = useStore({ x: 0, y: 0 });
@@ -37,6 +38,7 @@ export default component$(() => {
   const d = loader();
   const openStreaming = useSignal(true);
   const openClient = useSignal(true);
+
 
   return (
     <>
@@ -64,6 +66,106 @@ export default component$(() => {
       <br />
       {loc.url.toString().match("counter") && (
         <>
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <button
+            onClick$={() => {
+              openStreaming.value = !openStreaming.value;
+            }}
+          >
+            toggle injected
+          </button>
+          <br />
+          This is an example of streaming client side rendering (SSR on the
+          client)
+          <Counter />
+          <br />
+          <br />
+          <br />
+          <br />
+
           <button
             onClick$={() => {
               openStreaming.value = !openStreaming.value;
