@@ -18,7 +18,8 @@ I’ve reviewed several example repos on how to build microfrontends with qwik:
 
 These are great for MPAs, but not for SPA. We have such inputs:
 - completely dynamic routing—we have a single route that catches all paths ([...all]) in our host app and it decides what content to render
-- we use qwik containers that live separately (compared to components which live directly in the project and are known during build time)
+- we use qwik containers that live separately to render content (compared to components which live directly in the project and are known during build time)
+
 Thus, using qwik city, we don’t know any information about the future components of the page (I know that such information comes with the q-data.json response).
 
 So to render these containers on the client, I came up with these two approaches:
@@ -28,13 +29,13 @@ So to render these containers on the client, I came up with these two approaches
 This approach mimics SSR on the client: we hit the same endpoint for another container as during real SSR, receive an HTML response, and inject it into the DOM using dangerouslySetInnerHTML.  However, this approach is unreliable. For example, in the linked repo, you can:
 * Run the project
 * Open either the counter or react routes on the host
-* Click the "toggle streaming" button
+* Click the "toggle client-side ssr" button
 
 You’ll observe:
 * Weird behavior of the timer after remounting the component—it doesn’t work at all
 * Hydration errors in the qwikified React app
 
-Example of this [client-side streaming](https://github.com/sashkashishka/qwik-containers/blob/main/host/src/components/RemoteContainer/index.tsx#L35)
+Example of this [client-side ssr](https://github.com/sashkashishka/qwik-containers/blob/main/host/src/components/RemoteContainer/index.tsx#L35)
 
 
 2. **Client-Side Rendering Bundle**

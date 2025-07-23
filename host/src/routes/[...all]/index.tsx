@@ -30,15 +30,16 @@ function useMousePosition() {
   return position;
 }
 
+// TODO: is it called when changing route on the client
 export const loader = routeLoader$(() => "Hi! I was fetched on the server");
 
 export default component$(() => {
   const loc = useLocation();
   const pos = useMousePosition();
   const d = loader();
-  const openStreaming = useSignal(true);
+  const openLocal = useSignal(true);
+  const openClientSideSsr = useSignal(true);
   const openClient = useSignal(true);
-
 
   return (
     <>
@@ -152,32 +153,29 @@ export default component$(() => {
           <br />
           <button
             onClick$={() => {
-              openStreaming.value = !openStreaming.value;
+              openLocal.value = !openLocal.value;
             }}
           >
-            toggle injected
+            toggle local
           </button>
           <br />
-          This is an example of streaming client side rendering (SSR on the
-          client)
-          <Counter />
+          This is an example of the local component
+          {openLocal.value && <Counter />}
           <br />
           <br />
           <br />
           <br />
-
           <button
             onClick$={() => {
-              openStreaming.value = !openStreaming.value;
+              openClientSideSsr.value = !openClientSideSsr.value;
             }}
           >
-            toggle streaming
+            toggle client side SSR
           </button>
           <br />
-          This is an example of streaming client side rendering (SSR on the
-          client)
+          This is an example of client side SSR
           <br />
-          {openStreaming.value && (
+          {openClientSideSsr.value && (
             <RemoteContainer
               type="counter"
               host="http://localhost:4567"
@@ -212,16 +210,15 @@ export default component$(() => {
         <>
           <button
             onClick$={() => {
-              openStreaming.value = !openStreaming.value;
+              openClientSideSsr.value = !openClientSideSsr.value;
             }}
           >
-            toggle streaming
+            toggle client side SSR
           </button>
           <br />
-          This is an example of streaming client side rendering (SSR on the
-          client)
+          This is an example of client side SSR
           <br />
-          {openStreaming.value && (
+          {openClientSideSsr.value && (
             <RemoteContainer
               type="react"
               host="http://localhost:4568"
