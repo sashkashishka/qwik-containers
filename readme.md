@@ -7,7 +7,9 @@ Second widget is written in react and wrapped in qwikify adapter.
 
 To run this application, install deps in each microfrontend and follow their readme.
 
-## Container in container render approaches
+## Problem
+
+The project we are building has a micro-frontend architecture, so we’d like to leverage qwik containers (an independent application that embeds to a host). Also, we wanna have an SPA-like routing - so that when navigating between pages, nothing is rendered on the server, only on the client side. Third important piece of the puzzle is fully dynamic routing. The nature of the product cannot allow us to hardcode the layouts and the pages; all information comes from the CMS.
 
 I’ve reviewed several example repos on how to build microfrontends with qwik:
 - [qwik-microfrontend-starter](https://github.com/gioboa/qwik-microfrontend-starter/)
@@ -51,3 +53,8 @@ This approach seems much better, but I’m still concerned about bundle duplicat
 * Then we unmount and mount the component again
 * It fetches another set of scripts—those from the client-only bundle—to render the component again
 
+I noticed how the qwik city router handles navigation to another page: it fetches a q-data.json file. That allows qwik to determine the entry file, its dependencies, etc., and renders the components directly on the client.
+So this proves that it's possible to use vite-generated client chunks to render on the client side.
+
+So after this long introduction, could you please help me figure out:
+* is there a way to reuse the qwik-city router approach to render qwik containers inside the host qwik app?
