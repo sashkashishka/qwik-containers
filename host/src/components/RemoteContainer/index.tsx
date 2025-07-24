@@ -11,9 +11,12 @@ import {
 const writeHtml = (root: HTMLElement, html: string) => {
   const parser = new DOMParser();
   const htmlDocument = parser.parseFromString(html, "text/html");
-  let scripts = [...htmlDocument.querySelectorAll("script")];
+  let scripts = [
+    ...htmlDocument.querySelectorAll("script"),
+    { innerHTML: "console.log(123)", attributes: [] },
+  ];
 
-  scripts = scripts.map((s, i) => {
+  scripts = scripts.map((s) => {
     const newScript = document.createElement("script");
     for (const { name, value } of s.attributes) {
       newScript.setAttribute(name, value);
@@ -23,12 +26,18 @@ const writeHtml = (root: HTMLElement, html: string) => {
     return newScript;
   });
 
-  root.innerHTML = htmlDocument.documentElement.innerHTML;
-  const qwikContainer = document.querySelector(
+  root.innerHTML = htmlDocument.body.innerHTML;
+
+  const qc = htmlDocument.body.querySelector(
     `div[${CSS.escape("q:container")}]`,
   );
+
+  const instanceId = qc?.attributes["q:instance"].value;
+
+  const qwikContainer = document.querySelector(
+    `div[${CSS.escape("q:instance")}="${instanceId}"]`,
+  );
   if (!qwikContainer) throw new Error("Failed to mount qwik container!");
-  // @ts-ignore
   scripts.forEach((s) => qwikContainer.appendChild(s));
 };
 

@@ -24,7 +24,7 @@ const buildDir = path.join(distDir, "build");
 const assetsDir = path.join(distDir, "assets");
 
 // Allow for dynamic port and host
-const PORT = parseInt(process.env.PORT ?? "4321");
+const PORT = parseInt(process.env.PORT ?? "4444");
 const HOST = process.env.HOST ?? "0.0.0.0";
 
 const start = async () => {

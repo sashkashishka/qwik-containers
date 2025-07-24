@@ -1,13 +1,9 @@
 import {
   $,
   component$,
-  useOn,
   useOnDocument,
   useSignal,
   useStore,
-  useVisibleTask$,
-  useTask$,
-  useOnWindow,
 } from "@builder.io/qwik";
 import {
   routeLoader$,
@@ -67,90 +63,6 @@ export default component$(() => {
       <br />
       {loc.url.toString().match("counter") && (
         <>
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
           <button
             onClick$={() => {
               openLocal.value = !openLocal.value;
@@ -203,9 +115,6 @@ export default component$(() => {
           )}
         </>
       )}
-      {/* {loc.url.pathname.match("logo") && open.value && ( */}
-      {/*   <RemoteContainer type="logo" /> */}
-      {/* )} */}
       {loc.url.pathname.match("react") && (
         <>
           <button
