@@ -8,7 +8,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "showcase": "pnpm run build.server && pnpm run build.client && pnpm run serve",
+    "showcase": "pnpm run build.client && pnpm run build.server && pnpm run serve",
     "build": "qwik build",
     "build.client": "vite build",
     "build.server": "vite build --mode ssr",
