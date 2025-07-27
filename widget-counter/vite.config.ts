@@ -31,7 +31,7 @@ export default defineConfig(({ command, mode }): UserConfig => {
           },
           // NOTE: there is an issue with bundling the @builder.io/qwik package (_hW named import)
           // temporary disable this option until the issue will be solved
-          // external: ["@builder.io/qwik", "react", "react-dom"],
+          external: ["@builder.io/qwik"],
         },
       },
       esbuild: {
@@ -52,6 +52,13 @@ export default defineConfig(({ command, mode }): UserConfig => {
   }
 
   return {
+    build: {
+      rollupOptions: {
+        // NOTE: there is an issue with bundling the @builder.io/qwik package (_hW named import)
+        // temporary disable this option until the issue will be solved
+        external: ["@builder.io/qwik"],
+      },
+    },
     plugins: [
       qwikVite({
         client: {
