@@ -12,14 +12,8 @@ export default component$(() => {
           <Link class={styles.link} href="/">
             home
           </Link>
-          <Link class={styles.link} href="/logo">
-            logo
-          </Link>
           <Link class={styles.link} href="/counter">
             counter
-          </Link>
-          <Link class={styles.link} href="/react">
-            react
           </Link>
         </div>
       </div>

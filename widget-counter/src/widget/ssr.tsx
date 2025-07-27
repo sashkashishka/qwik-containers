@@ -21,6 +21,7 @@ export function renderWidget({
         strategy: "direct",
       },
     },
+    base: import.meta.env.DEV ? "http://localhost:5567/build/" : undefined,
     ...options,
     containerTagName,
     ...(!containerTagName ? { containerAttributes: { lang: "en" } } : {}),

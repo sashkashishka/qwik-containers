@@ -5,9 +5,7 @@ import {
   useSignal,
   useStore,
 } from "@qwik.dev/core";
-import {
-  useLocation,
-} from "@qwik.dev/router";
+import { useLocation } from "@qwik.dev/router";
 import { RemoteContainer } from "~/components/RemoteContainer";
 
 function useMousePosition() {
@@ -22,7 +20,6 @@ function useMousePosition() {
   );
   return position;
 }
-
 
 export default component$(() => {
   const loc = useLocation();
@@ -70,6 +67,7 @@ export default component$(() => {
             <RemoteContainer
               type="counter"
               host="http://localhost:5567"
+              htmlStreaming
             />
           )}
         </>
