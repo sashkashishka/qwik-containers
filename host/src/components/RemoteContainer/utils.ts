@@ -62,7 +62,7 @@ export const writeHtml = (root: HTMLElement, html: string) => {
     return newScript;
   });
 
-  root.innerHTML = htmlDocument.body.innerHTML;
+  root.outerHTML = htmlDocument.body.innerHTML;
 
   const qc = htmlDocument.body.querySelector(
     `div[${CSS.escape("q:container")}]`,
@@ -147,8 +147,15 @@ export async function fetchAndExecuteModule(moduleUrl: string, options = {}) {
     };
   }
 }
+function delay(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
 
-export function getSSRStreamFunction(remoteUrl: string, host: string) {
+export function getSSRStreamFunction(
+  remoteUrl: string,
+  host: string,
+  initialState,
+) {
   return async function* (stream: StreamWriter) {
     const url = new URL(remoteUrl, host);
 
@@ -173,8 +180,8 @@ export function getSSRStreamFunction(remoteUrl: string, host: string) {
       const rawHtml = decoder.decode(value);
 
       const fixedHtmlObj = fixRemotePathsInDevMode(rawHtml, base);
-      // console.log(base)
       base = fixedHtmlObj.base;
+      await delay(initialState);
       stream.write(fixedHtmlObj.html);
     }
   };

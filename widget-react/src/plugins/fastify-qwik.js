@@ -47,17 +47,18 @@ const qwikPlugin = async (fastify, options) => {
 
       const stream = writable.getWriter();
 
-      renderWidget({
+      const p = renderWidget({
         stream,
         serverData: JSON.parse(request.query.serverData || "{}"),
         qwikLoader: {
           include: "never",
         },
-        base: '/w/react/build'
+        base: "/w/react/build",
       });
 
       response.send(readable);
 
+      await p;
       await stream.ready;
       await stream.close();
     } catch (error) {

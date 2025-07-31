@@ -2,6 +2,7 @@ import {
   isBrowser,
   component$,
   SSRStream,
+  SSRStreamBlock,
   useSignal,
   useVisibleTask$,
 } from "@builder.io/qwik";
@@ -17,23 +18,26 @@ import {
 interface IProps {
   type: string;
   host: string;
+  initialState: number;
 }
 
-const StreamingClientRemoteContainer = component$(({ type, host }: IProps) => {
-  const ref = useSignal<HTMLElement>();
+const StreamingClientRemoteContainer = component$(
+  ({ type, host, initialState }: IProps) => {
+    const ref = useSignal<HTMLElement>();
 
-  useVisibleTask$(async ({ cleanup }) => {
-    getClientStream(
-      ref.value,
-      new URL(
-        `/w/${type}?serverData=${JSON.stringify({ initialState: 12 })}`,
-        import.meta.env.DEV ? host : window.location.origin,
-      ),
-    );
-  });
+    useVisibleTask$(async ({ cleanup }) => {
+      getClientStream(
+        ref.value,
+        new URL(
+          `/w/${type}?serverData=${JSON.stringify({ initialState })}`,
+          import.meta.env.DEV ? host : window.location.origin,
+        ),
+      );
+    });
 
-  return <div ref={ref} />;
-});
+    return <div ref={ref} />;
+  },
+);
 
 // =========================
 // =========================
@@ -41,7 +45,7 @@ const StreamingClientRemoteContainer = component$(({ type, host }: IProps) => {
 // =========================
 // =========================
 
-const ClientRemoteContainer = component$(({ type }: IProps) => {
+const ClientRemoteContainer = component$(({ type, initialState }: IProps) => {
   const ref = useSignal<HTMLElement>();
 
   useVisibleTask$(async ({ cleanup }) => {
@@ -51,7 +55,7 @@ const ClientRemoteContainer = component$(({ type }: IProps) => {
 
     if (success) {
       const dispose = await module.render({
-        initialState: 10,
+        initialState,
         parentNode: ref.value,
       });
       cleanup(() => dispose.cleanup());
@@ -67,16 +71,21 @@ const ClientRemoteContainer = component$(({ type }: IProps) => {
 // =========================
 // =========================
 
-const SSRRemoteContainer = component$(({ type, host }: IProps) => {
-  return (
-    <SSRStream>
-      {getSSRStreamFunction(
-        `/w/${type}?serverData=${JSON.stringify({ initialState: 12 })}`,
-        host,
-      )}
-    </SSRStream>
-  );
-});
+const SSRRemoteContainer = component$(
+  ({ type, host, initialState }: IProps) => {
+    return (
+      <SSRStreamBlock>
+        <SSRStream>
+          {getSSRStreamFunction(
+            `/w/${type}?serverData=${JSON.stringify({ initialState })}`,
+            host,
+            initialState
+          )}
+        </SSRStream>
+      </SSRStreamBlock>
+    );
+  },
+);
 
 // =========================
 // =========================
@@ -84,16 +93,29 @@ const SSRRemoteContainer = component$(({ type, host }: IProps) => {
 // =========================
 // =========================
 export const RemoteContainer = component$(
-  ({ type, host, htmlStreaming }: IProps & { htmlStreaming?: boolean }) => {
+  ({
+    type,
+    host,
+    htmlStreaming,
+    initialState,
+  }: IProps & { htmlStreaming?: boolean }) => {
     if (isBrowser && htmlStreaming) {
-      return <StreamingClientRemoteContainer type={type} host={host} />;
+      return (
+        <StreamingClientRemoteContainer
+          type={type}
+          host={host}
+          initialState={initialState}
+        />
+      );
     }
 
     if (isBrowser) {
-      return <ClientRemoteContainer type={type} />;
+      return <ClientRemoteContainer type={type} initialState={initialState} />;
     }
 
-    return <SSRRemoteContainer type={type} host={host} />;
+    return (
+      <SSRRemoteContainer type={type} host={host} initialState={initialState} />
+    );
   },
 );
 

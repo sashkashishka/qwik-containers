@@ -25,6 +25,18 @@ const qwikPlugin: FastifyPluginAsync<FastifyQwikOptions> = async (
   const { buildDir, distDir, assetsDir } = options;
 
   fastify.register(proxy, {
+    upstream: "http://localhost:4578",
+    prefix: "/w/widget-in-widget",
+    rewritePrefix: "/w/widget-in-widget",
+    http2: false,
+  });
+  fastify.register(proxy, {
+    upstream: "http://localhost:4577",
+    prefix: "/w/widget1",
+    rewritePrefix: "/w/widget1",
+    http2: false,
+  });
+  fastify.register(proxy, {
     upstream: "http://localhost:4567",
     prefix: "/w/counter",
     rewritePrefix: "/w/counter",

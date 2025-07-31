@@ -2,10 +2,12 @@
  * This is the base config for vite.
  * When building, the adapter config is used which loads this file and extends it.
  */
+import path from "node:path";
 import { defineConfig, type UserConfig } from "vite";
 import { qwikVite } from "@builder.io/qwik/optimizer";
 import { qwikCity } from "@builder.io/qwik-city/vite";
 import tsconfigPaths from "vite-tsconfig-paths";
+import { viteQwikExportMerger } from "../vite.qwik-export-import-merger.plugin";
 import pkg from "./package.json";
 
 type PkgDep = Record<string, string>;
@@ -21,7 +23,7 @@ errorOnDuplicatesPkgDeps(devDependencies, dependencies);
  */
 export default defineConfig(({ command, mode }): UserConfig => {
   return {
-    plugins: [qwikCity(), qwikVite(), tsconfigPaths()],
+    plugins: [qwikCity(), qwikVite(), tsconfigPaths(), viteQwikExportMerger()],
     // This tells Vite which dependencies to pre-build in dev mode.
     optimizeDeps: {
       // Put problematic deps that break bundling here, mostly those with binaries.
@@ -49,18 +51,19 @@ export default defineConfig(({ command, mode }): UserConfig => {
     esbuild: {
       drop: [],
     },
-    build: {
-      rollupOptions: {
-        // NOTE: there is an issue with bundling the @builder.io/qwik package (_hW named import)
-        // temporary disable this option until the issue will be solved
-        external: ["@builder.io/qwik"],
-      },
-    },
 
     server: {
       proxy: {
         "/w/counter": {
           target: "http://localhost:4567",
+          changeOrigin: true,
+        },
+        "/w/widget-in-widget": {
+          target: "http://localhost:4578",
+          changeOrigin: true,
+        },
+        "/w/widget1": {
+          target: "http://localhost:4577",
           changeOrigin: true,
         },
         "/w/react": {

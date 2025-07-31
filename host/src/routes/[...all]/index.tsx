@@ -90,7 +90,8 @@ export default component$(() => {
             <RemoteContainer
               type="counter"
               host="http://localhost:4567"
-              htmlStreaming
+              initialState={12}
+              htmlStreaming={false}
             />
           )}
         </>

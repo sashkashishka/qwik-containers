@@ -6,6 +6,7 @@ import { defineConfig, type UserConfig } from "vite";
 import { qwikVite } from "@builder.io/qwik/optimizer";
 import path from "node:path";
 import tsconfigPaths from "vite-tsconfig-paths";
+import { viteQwikExportMerger } from "../vite.qwik-export-import-merger.plugin";
 import pkg from "./package.json";
 
 type PkgDep = Record<string, string>;
@@ -29,9 +30,6 @@ export default defineConfig(({ command, mode }): UserConfig => {
             chunkFileNames: "chunks/[name].[hash].js",
             assetFileNames: "assets/[name].[hash].[ext]",
           },
-          // NOTE: there is an issue with bundling the @builder.io/qwik package (_hW named import)
-          // temporary disable this option until the issue will be solved
-          external: ["@builder.io/qwik"],
         },
       },
       esbuild: {
@@ -47,18 +45,12 @@ export default defineConfig(({ command, mode }): UserConfig => {
           csr: true,
         }),
         tsconfigPaths(),
+        viteQwikExportMerger(),
       ],
     };
   }
 
   return {
-    build: {
-      rollupOptions: {
-        // NOTE: there is an issue with bundling the @builder.io/qwik package (_hW named import)
-        // temporary disable this option until the issue will be solved
-        external: ["@builder.io/qwik"],
-      },
-    },
     plugins: [
       qwikVite({
         client: {
@@ -71,6 +63,7 @@ export default defineConfig(({ command, mode }): UserConfig => {
         },
       }),
       tsconfigPaths(),
+      viteQwikExportMerger(),
     ],
     // This tells Vite which dependencies to pre-build in dev mode.
     optimizeDeps: {
